@@ -1,5 +1,7 @@
 # A sample Laravel development environments on Kubernetes
 
+[![CircleCI](https://circleci.com/gh/shin1x1/laravel-k8s-dev-sample.svg?style=svg)](https://circleci.com/gh/shin1x1/laravel-k8s-dev-sample)
+
 ## Requirements
 
 * Kubenernetes
