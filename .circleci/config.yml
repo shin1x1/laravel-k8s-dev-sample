@@ -1,0 +1,30 @@
+version: 2.1
+orbs:
+  kube-orb: circleci/kubernetes@0.10.1
+jobs:
+  build:
+    machine: true
+
+    steps:
+      - checkout
+      - kube-orb/install-kubectl
+      - run:
+          name: Create k8s custer
+          command: |
+            curl -Lo ./kind https://github.com/kubernetes-sigs/kind/releases/download/v0.5.1/kind-$(uname)-amd64
+            chmod +x ./kind
+            perl -pi -e "s#%HOST_PATH%#`pwd`#g" .circleci/kind-config.yaml
+
+            ./kind create cluster --config .circleci/kind-config.yaml --wait 5m
+            cp $(./kind get kubeconfig-path) ${HOME}/.kube/config
+
+            kubectl get all
+      - run: make install
+      - run: make phpcs
+      - run: make test
+
+workflows:
+  version: 2
+  build:
+    jobs:
+      - build

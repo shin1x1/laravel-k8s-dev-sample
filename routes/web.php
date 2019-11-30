@@ -11,6 +11,25 @@
 |
 */
 
+use App\Eloquents\EloquentCustomer;
+
 Route::get('/', function () {
     return view('welcome');
+});
+
+Route::get('/info', function() {
+    phpinfo();
+    exit;
+});
+
+Route::get('/phpcon', function() {
+    $message = 'Hello!';
+
+    return response($message);
+});
+
+Route::get('/customers/{id}', function ($id) {
+    $customer = EloquentCustomer::find($id);
+
+    return response($customer);
 });

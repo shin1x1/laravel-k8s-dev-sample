@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: sample-php-fpm
+data:
+  zzmyphp.ini: |
+    ; timezone
+    date.timezone = Asia/Tokyo
+
+    ; error reporing
+    log_errors = On
+    error_log = /dev/stderr
+    display_errors = Off
+
+    ; XDebug
+    xdebug.remote_enable = On
+    xdebug.remote_autostart = On
+    xdebug.remote_connect_back = Off
+    xdebug.remote_host = docker.for.mac.localhost
+    xdebug.idekey = phpcon
+  zzmyphp-fpm.conf: |
+    [www]
+    pm.status_path = /phpfpm_status

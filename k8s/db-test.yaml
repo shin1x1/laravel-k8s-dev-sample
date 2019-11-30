@@ -1,0 +1,37 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-db-test
+spec:
+  ports:
+    - name: "5432"
+      port: 5432
+      targetPort: 5432
+  selector:
+    app: sample
+    role: db-test
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sample-db-test
+  labels:
+    app: sample
+    role: db-test
+spec:
+  containers:
+    - name: db
+      image: postgres:11-alpine
+      ports:
+        - containerPort: 5432
+      env:
+        - name: LC_ALL
+          value: C
+        - name: POSTGRES_DB
+          value: app
+        - name: POSTGRES_PASSWORD
+          value: pass
+        - name: POSTGRES_USER
+          value: app
+

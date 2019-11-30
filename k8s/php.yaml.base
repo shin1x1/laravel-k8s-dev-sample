@@ -1,0 +1,63 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: sample-php
+spec:
+  type: LoadBalancer
+  ports:
+    - name: "8000"
+      port: 8000
+      targetPort: 80
+  selector:
+    app: sample
+    role: web
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: sample-php
+  labels:
+    app: sample
+    role: web
+spec:
+  containers:
+    - image: nginx:1.14
+      name: nginx
+      ports:
+        - containerPort: 80
+      resources: {}
+      volumeMounts:
+        - mountPath: /var/www/html
+          name: host
+        - mountPath: /etc/nginx/nginx.conf
+          subPath: nginx.conf
+          name: nginx-config
+        - mountPath: /etc/nginx/conf.d/default.conf
+          subPath: default.conf
+          name: nginx-config
+        - mountPath: /etc/nginx/conf.d/php-upstream.conf
+          subPath: php-upstream.conf
+          name: nginx-config
+    - image: shin1x1/php-dev:7.4.0-fmp-buster
+      name: php-fpm
+      volumeMounts:
+        - mountPath: /var/www/html
+          name: host
+        - mountPath: /usr/local/etc/php/conf.d/zzmyphp.ini
+          subPath: zzmyphp.ini
+          name: php-fpm-config
+        - mountPath: /usr/local/etc/php-fpm.d/zzmyphp-fpm.conf
+          subPath: zzmyphp-fpm.conf
+          name: php-fpm-config
+  volumes:
+    - name: nginx-config
+      configMap:
+        name: sample-nginx
+    - name: php-fpm-config
+      configMap:
+        name: sample-php-fpm
+    - name: host
+      hostPath:
+        path: %HOST_PATH%
+

@@ -1,5 +1,9 @@
 <?php
+/**
+ * @var \Illuminate\Routing\Router $router
+ */
 
+use App\Http\Actions\AddPoint\AddPointAction;
 use Illuminate\Http\Request;
 
 /*
@@ -16,3 +20,5 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+$router->put('/customers/add_point', AddPointAction::class);
