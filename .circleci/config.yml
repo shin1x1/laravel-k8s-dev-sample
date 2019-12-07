@@ -11,12 +11,11 @@ jobs:
       - run:
           name: Create k8s custer
           command: |
-            curl -Lo ./kind https://github.com/kubernetes-sigs/kind/releases/download/v0.5.1/kind-$(uname)-amd64
+            curl -Lo ./kind https://github.com/kubernetes-sigs/kind/releases/download/v0.6.1/kind-$(uname)-amd64
             chmod +x ./kind
             perl -pi -e "s#%HOST_PATH%#`pwd`#g" .circleci/kind-config.yaml
 
             ./kind create cluster --config .circleci/kind-config.yaml --wait 5m
-            cp $(./kind get kubeconfig-path) ${HOME}/.kube/config
 
             kubectl get all
       - run: make install
