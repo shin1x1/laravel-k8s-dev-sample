@@ -9,7 +9,7 @@ jobs:
       - checkout
       - kube-orb/install-kubectl
       - run:
-          name: Create k8s custer
+          name: Create k8s cluster
           command: |
             curl -Lo ./kind https://github.com/kubernetes-sigs/kind/releases/download/v0.6.1/kind-$(uname)-amd64
             chmod +x ./kind
